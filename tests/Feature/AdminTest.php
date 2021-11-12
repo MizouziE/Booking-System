@@ -18,16 +18,29 @@ class AdminTest extends TestCase
     public function test_an_admin_can_create_a_service()
     {
         $this->withoutExceptionHandling();
-        
+
         $serviceDetails = [
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'price' => '5000'
         ];
 
-        $this->post('/services', $serviceDetails);
-
+        $this->post('/services', $serviceDetails)->assertRedirect('/services');
 
         $this->assertDatabaseHas('services', $serviceDetails);
+
+        $this->get('/services')->assertSee($serviceDetails['name']);
+    }
+
+    /** @test */
+    public function test_a_service_requires_a_name()
+    {
+        $this->post('/services', [])->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function test_a_service_requires_a_description()
+    {
+        $this->post('/services', [])->assertSessionHasErrors('description');
     }
 }

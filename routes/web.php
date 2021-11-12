@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ServicesController;
 use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/services', function () {
-    Service::create(request(['name', 'description', 'price']));
-});
+Route::post('/services', [ServicesController::class, 'store']);
+
+Route::get('services', [ServicesController::class, 'index']);
