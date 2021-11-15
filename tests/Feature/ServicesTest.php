@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Service;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class AdminTest extends TestCase
+class ServicesTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
@@ -17,8 +18,6 @@ class AdminTest extends TestCase
      */
     public function test_an_admin_can_create_a_service()
     {
-        $this->withoutExceptionHandling();
-
         $serviceDetails = [
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
@@ -42,5 +41,15 @@ class AdminTest extends TestCase
     public function test_a_service_requires_a_description()
     {
         $this->post('/services', [])->assertSessionHasErrors('description');
+    }
+
+    /** @test */
+    public function test_an_admin_can_view_a_service()
+    {
+        $service = Service::factory()->create();
+
+        $this->get($service->path())
+            ->assertSee($service->name)
+            ->assertSee($service->description);
     }
 }

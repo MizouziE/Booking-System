@@ -22,3 +22,5 @@ Route::get('/', function () {
 Route::post('/services', [ServicesController::class, 'store']);
 
 Route::get('services', [ServicesController::class, 'index']);
+
+Route::get('/services/{service}', [ServicesController::class, 'show']);
