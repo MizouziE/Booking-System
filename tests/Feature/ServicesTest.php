@@ -34,13 +34,17 @@ class ServicesTest extends TestCase
     /** @test */
     public function test_a_service_requires_a_name()
     {
-        $this->post('/services', [])->assertSessionHasErrors('name');
+        $service = Service::factory()->raw(['name' => '']);
+
+        $this->post('/services', $service)->assertSessionHasErrors('name');
     }
 
     /** @test */
     public function test_a_service_requires_a_description()
     {
-        $this->post('/services', [])->assertSessionHasErrors('description');
+        $service = Service::factory()->raw(['description' => '']);
+
+        $this->post('/services', $service)->assertSessionHasErrors('description');
     }
 
     /** @test */
@@ -51,5 +55,13 @@ class ServicesTest extends TestCase
         $this->get($service->path())
             ->assertSee($service->name)
             ->assertSee($service->description);
+    }
+
+    /** @test */
+    public function test_a_service_requires_a_provider()
+    {
+        $service = Service::factory()->raw();
+
+        $this->post('/services', $service)->assertSessionHasErrors('provider');
     }
 }
