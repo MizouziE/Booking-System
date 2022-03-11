@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ServicesController;
+use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/services', [ServicesController::class, 'store']);
+
+Route::get('services', [ServicesController::class, 'index']);
+
+Route::get('/services/{service}', [ServicesController::class, 'show']);
